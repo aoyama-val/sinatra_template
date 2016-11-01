@@ -24,7 +24,7 @@ end
 
 get '/' do
   a = required(params, "a")
-  b = optional(params, "b", 100)
+  b = optional(params, "b", 100).to_i
   puts "called"
   "a = #{a} b = #{b}"
 end
