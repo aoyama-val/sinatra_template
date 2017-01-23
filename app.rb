@@ -39,13 +39,21 @@ error do
 end
 
 get '/' do
+  response.headers["Cache-Control"] = "max-age=10, public, must-revalidate"
+  headers = request.env.select {|key, val| key.start_with?("HTTP_") }
+  ret = {
+    hello: "sinatra",
+    headers: headers,
+  }
+  return JSON.generate(ret)
+end
+
+get '/hoge' do
   a = get_required(params, "a")
   b = get_optional(params, "b", 100).to_i
-  puts "called"
   ret = {
-    params: {}
+    a: a,
+    b: b,
   }
-  ret[:params][:a] = a
-  ret[:params][:b] = b
-  return JSON.generate(ret)
+  return JSON.pretty_generate(ret)
 end
